@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Make the wrapper executable
+        run: chmod +x gradlew
+
+      - name: Unit tests
+        run: ./gradlew :plugin:test :range:test --stacktrace
+
+      - name: Integration tests
+        run: ./gradlew :integration-test:test --stacktrace
+
+      - name: Package the plugin
+        run: ./gradlew :plugin:jar --stacktrace
+
+      - name: Upload the plugin artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: memshell-party-blade-plugin
+          path: plugin/build/libs/memshell-party-blade-plugin-*.jar
+          if-no-files-found: error
