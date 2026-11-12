@@ -63,7 +63,7 @@ cp memshell-blade-plugin-3.2.0.jar /tmp/ci-plugin/
 
 ## CI
 
-`.github/workflows/ci.yml` runs on every push and pull request. It runs the unit test tasks, the integration tests, builds the plugin jar, and uploads the `memshell-blade-plugin` artifact.
+`.github/workflows/ci.yml` runs on every push and pull request. It runs the unit tests in `plugin/src/test`, the integration tests, builds the plugin jar, and uploads the `memshell-blade-plugin` artifact.
 
 ## Injection preconditions
 

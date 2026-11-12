@@ -26,6 +26,17 @@ dependencies {
     // The injector template extends ChannelInitializer, so generation-time template resolution
     // needs netty-transport on the plugin classloader. The host full distribution ships it.
     compileOnly(libs.netty.transport)
+
+    testImplementation("io.github.reajason:memshell-party-api:3.2.0-SNAPSHOT")
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
+}
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
 
 base {
